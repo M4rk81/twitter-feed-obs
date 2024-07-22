@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Feed per OBS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: transparent;
+            color: white;
+            overflow: hidden;
+        }
+        #twitterFeed {
+            width: 100%;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        .tweet {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .tweet img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .tweet-content {
+            display: flex;
+            align-items: start;
+        }
+        .tweet-text {
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="twitterFeed"></div>
+
+    <script>
+        const twitterFeed = document.getElementById('twitterFeed');
+        const profiles = ['username1', 'username2', 'username3']; // Sostituisci con i profili desiderati
+
+        function fetchTweets() {
+            // Simula il recupero dei tweet (sostituisci con una vera chiamata API quando possibile)
+            const mockTweets = profiles.flatMap(profile => 
+                Array(3).fill().map((_, i) => ({
+                    username: profile,
+                    text: `Questo è un tweet di esempio ${i + 1} da ${profile}`,
+                    avatar: 'https://via.placeholder.com/50'
+                }))
+            );
+
+            // Mescola i tweet per simulare un feed in tempo reale
+            return mockTweets.sort(() => Math.random() - 0.5);
+        }
+
+        function displayTweets(tweets) {
+            twitterFeed.innerHTML = '';
+            tweets.forEach(tweet => {
+                const tweetElement = document.createElement('div');
+                tweetElement.className = 'tweet';
+                tweetElement.innerHTML = `
+                    <div class="tweet-content">
+                        <img src="${tweet.avatar}" alt="${tweet.username} avatar">
+                        <div class="tweet-text">
+                            <strong>@${tweet.username}</strong>
+                            <p>${tweet.text}</p>
+                        </div>
+                    </div>
+                `;
+                twitterFeed.appendChild(tweetElement);
+            });
+        }
+
+        function updateFeed() {
+            const tweets = fetchTweets();
+            displayTweets(tweets);
+        }
+
+        // Aggiorna il feed ogni 30 secondi
+        updateFeed();
+        setInterval(updateFeed, 30000);
+    </script>
+</body>
+</html>
